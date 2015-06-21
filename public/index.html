@@ -1,0 +1,62 @@
+<!-- Filename: public/index.html -->
+<html ng-app="PartyTexterApp">
+<head>
+	<title>Party Texter</title>
+	<script src="http://cdn.pubnub.com/pubnub.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+    <script src="partytexter.js"></script>
+	<style>
+	body {
+		font-family: Arial;
+	}
+
+	.leaderboard {
+		border: 1px solid black; 
+		float: right; 
+		width: 10%;
+	}
+
+	.lastmessage {
+		width: 75%; 
+		text-align: center; 
+		border: 1px solid #C0C0C0; 
+		background-color: #F0F0F0; 
+		padding: 20px; 
+		position: relative;
+	}
+
+	.lastmessage .number {
+		position: absolute; 
+		bottom: 5px; 
+		right: 5px;
+		font-style: italic;
+	}
+
+	.lastmessage .text {
+		font-size: 36pt; 
+	}
+	</style>
+</head>
+
+<body ng-controller="PartyTexterCtrl">
+	<div>
+		Text your message to {{phoneNumber}}
+	</div>
+
+	<table class="leaderboard" ng-show="lastMessage">
+		<tr>
+			<th>Phone #</th>
+			<th>Score</th>
+		</tr>
+		<tr ng-repeat="leader in leaderBoard | orderObjectBy:'count' | orderBy:'-count'">
+			<td>{{leader.number | phone:6}}</td>
+			<td style="text-align: right">{{leader.count}}</td>
+		</tr>
+	</table>
+
+	<div class="lastmessage" ng-show="lastMessage">
+		<span class="number">{{lastMessage.from | phone:6}}</span>
+		<span class="text">{{lastMessage.text}}</span>
+	</div>
+</body>
+</html>
